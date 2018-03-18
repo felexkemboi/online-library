@@ -30,4 +30,3 @@ class BookInstanceAdmin(admin.ModelAdmin):
 	list_filter = ('status', 'due_back')
 
 
-"""

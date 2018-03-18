@@ -22,6 +22,12 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
     # Genre class has already been defined so we can specify the object above.
+    def display_genre(self):
+        """
+        Creates a string for the Genre. This is required to display genre in Admin.
+        """
+        return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
+    display_genre.short_description = 'Genre'
     
     def __str__(self):
         """
@@ -43,13 +49,15 @@ class BookInstance(models.Model):
 	imprint  = models.CharField(max_length=200)
 	due_back = models.DateField(null=True,blank = True)
 
-	LOAN_STATUS = (('m' , 'Maintenance'),
-		           ('o' ,'On loan'),
-		           ('a','Available'),
-		           ('r','Reserved'),
-    )
+	LOAN_STATUS = (
+		           ('m', 'Maintenance'),
+		           ('o', 'On loan'),
+		           ('a', 'Available'),
+		           ('r', 'Reserved'),
+                  )
 
-	status = models.CharField(max_length = 1,choices = LOAN_STATUS,blank=True,default='m',help_text='Books availability')
+	status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Books availability')
+	list_filter = ('status','due_back')
 
 	class meta:
 		ordering = ["due_back"]
@@ -63,7 +71,7 @@ class Author(models.Model):
 	first_name = models.CharField(max_length=100)
 	last_name = models.CharField(max_length=100)
 	date_of_birth = models.DateField(null =True,blank = True)
-	date_of_death = models.DateField('Died',null = True,blank = True)
+	date_of_death = models.DateField('Died' ,null = True,blank = True)
 
 	class meta:
 		ordering = [ "first_name", "last_name" ]
@@ -74,4 +82,4 @@ class Author(models.Model):
 
 	def __str__(self):
 		"""String reperesenting the model object"""
-		return '{0},{1}'.format(self.first_name,self.last_name)
+		return '{0},{1}'.format(self.last_name,self.first_name)

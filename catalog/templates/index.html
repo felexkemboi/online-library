@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+<div style="margin-left:20px;margin-top:20px">
 
 {% block content %}
 <h1>Local Library </h1>
@@ -15,4 +16,7 @@
 	<li><strong>Authors:</strong>{{ num_authors }}</li>
 
 </ul>
+</p>You have visited this page {{ num_visits }}{% if num_visits == 1%} once  {% else %}  times{% endif %}.</p>
+
 {% endblock %}
+</div>
